@@ -13,15 +13,12 @@ export function Movies() {
       const response = await fetch(URL);
       // console.log(response);
       const data = await response.json();
-      console.log(data);
       // respuesta = data.Response;
       respuesta.current = data.Response;
-      console.log(respuesta, "aa");
       setMovies(data.Search);
       // console.log(data);
     }
     fetchData();
-    console.log("Movies.js");
   }, [searchValue, apiKey]);
 
   function onSubmit(e) {
@@ -30,16 +27,22 @@ export function Movies() {
     // console.log(search.current.value, 'aaa');
     setSearchValue(search.current.value);
     search.current.value = "";
+    // console.log(document.querySelector('input[name=prueba]:checked').value);
+    const yy = document.querySelector("[name=prueba]:checked").value;
+    console.log(yy);
   }
   function res() {
     // console.log(respuesta);
     if (respuesta.current === "False") {
       // console.log('false');
-      return <h1 className="text-uppercase text-center text-light">No matches found</h1>;
+      return (
+        <h1 className="text-uppercase text-center text-light">
+          No matches found
+        </h1>
+      );
     }
-    console.log("true");
     return (
-      <div className="row border justify-content-center align-items-center">
+      <div className="row justify-content-center align-items-center">
         {movies.map((movie) => {
           return (
             <Card title={movie.Title} image={movie.Poster} key={movie.imdbID} />
@@ -52,12 +55,44 @@ export function Movies() {
     <div className="container">
       <h1 className="text-light text-center mt-3">MOVIES APP</h1>
       <form onSubmit={onSubmit}>
-        <div className="col-md-4 offset-md-4 off">
+        <div className="col-md-4 offset-md-4 off d-flex">
+          <div className="form-check">
+            <input
+              className="form-check-input"
+              type="radio"
+              name="prueba"
+              id="r1"
+              value="option1"
+              defaultChecked
+            />
+            <label
+              className="form-check-label text-light"
+              htmlFor="exampleRadios1"
+            >
+              Default radio
+            </label>
+          </div>
+          <div className="form-check">
+            <input
+              className="form-check-input"
+              type="radio"
+              name="prueba"
+              id="r2"
+              value="option2"
+            />
+            <label
+              className="form-check-label text-light"
+              htmlFor="exampleRadios2"
+            >
+              Second default radio
+            </label>
+          </div>
+
           <div className="input-group mb-3">
             <input
               type="text"
               className="form-control"
-              placeholder="search"
+              placeholder="search by title"
               ref={search}
               // defaultValue={search}
             />
