@@ -5,7 +5,13 @@ export default function Card(props) {
         <img src={props.image} className="card-img-top" alt="..." />
         <div className="card-body">
           <p className="card-text">
-            {props.title}
+            TITLE: {props.title}
+          </p>
+          <p className="card-text">
+            TYPE: {props.type}
+          </p>
+          <p className="card-text">
+            YEAR: {props.year}
           </p>
         </div>
       </div>
