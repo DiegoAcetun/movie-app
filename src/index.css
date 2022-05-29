@@ -1,19 +1,8 @@
+@import url("https://fonts.googleapis.com/css2?family=Tiro+Gurmukhi:ital@1&display=swap");
 #root{
-  background-color: black;
+  font-family: "Tiro Gurmukhi", serif;
 }
-html{
-  background-color: black;
-}
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+html {
+  height: 100%;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}

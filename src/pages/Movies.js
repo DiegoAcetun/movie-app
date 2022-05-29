@@ -20,7 +20,7 @@ export function Movies() {
         const URL = `https://www.omdbapi.com/?apikey=${apiKey}&s=${searchValue}&type=${type}`;
         const response = await fetch(URL);
         const data = await response.json();
-        console.log(data.Search);
+        // console.log(data.Search);
         respuesta.current = data.Response;
         setMovies(data.Search);
       } catch (error) {
@@ -48,14 +48,16 @@ export function Movies() {
   function res() {
     if(bienvenida){
       return (
-        <h1 className="text-light text-center">HOLA! PUEDES REALIZAR UNA BÚSQUEDA EN EL RECUEADRO</h1>
+        <div className="bienvenida">
+          <h1 className="text-light text-uppercase text-center">you can do a search in the box above</h1>
+        </div>  
       )
     }
 
     if (respuesta.current === "False") {
       return (
         <h1 className="text-uppercase text-center text-light">
-          No matches found
+          sorry No results found
         </h1>
       );
     }
@@ -79,7 +81,7 @@ export function Movies() {
   }
 
   return (
-    <div className="container">
+    <div className="container bienvenida">
       <h1 className="text-light text-center mt-3">MOVIES APP</h1>
       <form onSubmit={onSubmit}>
         <div className="row justify-content-center">

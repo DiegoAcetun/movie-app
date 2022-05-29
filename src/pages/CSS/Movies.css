@@ -1,4 +1,11 @@
+body {
+  background: linear-gradient(rgba(15, 12, 41, .8), rgba(36, 36, 62, .8)), url("../Imgs/background.jpg");
+  background-position: center ;
+  background-size: cover;
+}
 button:active {
   transform: scale(0.8);
   /* Scaling button to 0.98 to its original size */
 }
+
+
