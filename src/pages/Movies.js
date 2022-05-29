@@ -7,17 +7,19 @@ export function Movies() {
   const [movies, setMovies] = useState([]);
   const [type, setType] = useState("");
   const [bienvenida, setBienvenida] = useState(true);
+  const [page, setPage] = useState(1);
   const search = useRef();
+  // TODO: usar state para la respuesta
   const respuesta = useRef();
-  // console.log('executed ss');
   useEffect(() => {
-    if (bienvenida){
+    if (bienvenida) {
       return;
     }
-    // console.log("executed"); 
+    // console.log("executed");
     async function fetchData() {
       try {
-        const URL = `https://www.omdbapi.com/?apikey=${apiKey}&s=${searchValue}&type=${type}`;
+        console.log(page);
+        const URL = `https://www.omdbapi.com/?apikey=${apiKey}&s=${searchValue}&type=${type}&page=${page}`;
         const response = await fetch(URL);
         const data = await response.json();
         // console.log(data.Search);
@@ -28,7 +30,7 @@ export function Movies() {
       }
     }
     fetchData();
-  }, [searchValue, apiKey, bienvenida, type]);
+  }, [searchValue, apiKey, bienvenida, type, page]);
 
   function onSubmit(e) {
     e.preventDefault();
@@ -39,21 +41,35 @@ export function Movies() {
     const type = document.querySelector('input[name="type"]:checked').value;
     setType(type);
     setBienvenida(false);
+    setPage(1);
     // console.log(type);
     // console.log(document.querySelector('input[name=type]:checked').value);
     // const yy = document.querySelector("input[name=type]:checked").value;
     // console.log(yy);
     // console.log(e.target.value);
   }
+
+  function next() {
+    if (respuesta.current === "True") {
+      setPage(page + 1);
+    }
+  }
+  function before() {
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  }
   function res() {
-    if(bienvenida){
+    if (bienvenida) {
       return (
         <div className="bienvenida">
-          <h1 className="text-light text-uppercase text-center">you can do a search in the box above</h1>
-        </div>  
-      )
+          <h1 className="text-light text-uppercase text-center">
+            you can do a search in the box above
+          </h1>
+        </div>
+      );
     }
-
+    // const response = await respuesta.current;
     if (respuesta.current === "False") {
       return (
         <h1 className="text-uppercase text-center text-light">
@@ -61,22 +77,41 @@ export function Movies() {
         </h1>
       );
     }
-    const keys = []
+    console.log("malll");
+    const keys = [];
     return (
-      <div className="row justify-content-center align-items-center">
-        {movies.map((movie) => {
-          //verificando si todavia no esta esta pelicula en el array
-          if(!keys.includes(movie.imdbID)){
-            keys.push(movie.imdbID);
-            return (
-              <Card image={movie.Poster} title={movie.Title} type={movie.Type} year={movie.Year} key={movie.imdbID} />
-            );
-          }
-          return null;
-
-          
-        })}
-      </div>
+      <>
+        <div className="row justify-content-center align-items-center">
+          {movies.map((movie) => {
+            //verificando si todavia no esta esta pelicula en el array
+            if (!keys.includes(movie.imdbID)) {
+              keys.push(movie.imdbID);
+              return (
+                <Card
+                  image={movie.Poster}
+                  title={movie.Title}
+                  type={movie.Type}
+                  year={movie.Year}
+                  key={movie.imdbID}
+                />
+              );
+            }
+            return null;
+          })}
+        </div>
+        <div className="row justify-content-around fixed-bottom">
+          <div className="col-4 d-flex justify-content-center">
+            <button className="btn btn-info btn-lg" onClick={before}>
+              Before Page
+            </button>
+          </div>
+          <div className="col-4 d-flex justify-content-center">
+            <button className="btn btn-info btn-lg" onClick={next}>
+              Next Page
+            </button>
+          </div>
+        </div>
+      </>
     );
   }
 
