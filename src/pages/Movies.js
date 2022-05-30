@@ -2,32 +2,28 @@ import { useState, useEffect, useRef } from "react";
 import "./CSS/Movies.css";
 import Card from "../components/Card";
 export function Movies() {
+  console.log("Movies.js");
   const apiKey = process.env.REACT_APP_KEY_OMDB;
   const [movies, setMovies] = useState([]);
   const search = useRef();
   // TODO: usar state para la respuesta
   const [response, setResponse] = useState("");
   const [stateMovies, setStateMovies] = useState({
-    searchValue: "pan",
+    searchValue: "disney",
     bienvenida: true,
     type: "",
-    page: 1,
+    page: 29,
   });
   useEffect(() => {
     if (stateMovies.bienvenida) {
       return;
     }
-    // console.log("executed");
     async function fetchData() {
       try {
-        // console.log(page);
         const URL = `https://www.omdbapi.com/?apikey=${apiKey}&s=${stateMovies.searchValue}&type=${stateMovies.type}&page=${stateMovies.page}`;
-        console.log(URL);
         const response = await fetch(URL);
         const data = await response.json();
-        console.log(data.Response);
         setResponse(data.Response);
-        console.log(stateMovies.page);
         setMovies(data.Search);
       } catch (error) {
         console.log(error);
@@ -38,8 +34,6 @@ export function Movies() {
 
   function onSubmit(e) {
     e.preventDefault();
-    // console.log(searchValue.current.value);
-    // console.log(search.current.value, 'aaa');
     const type = document.querySelector('input[name="type"]:checked').value;
     setStateMovies({
       ...stateMovies,
@@ -48,12 +42,7 @@ export function Movies() {
       type: type,
       page: 1,
     });
-    search.current.value = "";
-    // console.log(type);
-    // console.log(document.querySelector('input[name=type]:checked').value);
-    // const yy = document.querySelector("input[name=type]:checked").value;
-    // console.log(yy);
-    // console.log(e.target.value);
+    // search.current.value = "";
   }
 
   function next() {
@@ -66,7 +55,7 @@ export function Movies() {
       setStateMovies({ ...stateMovies, page: stateMovies.page - 1 });
     }
   }
-  function res() {
+  function validation() {
     if (stateMovies.bienvenida) {
       return (
         <div className="bienvenida">
@@ -76,15 +65,14 @@ export function Movies() {
         </div>
       );
     }
-    // const response = await respuesta.current;
     if (response === "False") {
       return (
         <h1 className="text-uppercase text-center text-light">
           sorry No results found
         </h1>
       );
-    } else if (response === "True") {
-      console.log("malll");
+    }
+    if (response === "True") {
       const keys = [];
       return (
         <>
@@ -106,7 +94,6 @@ export function Movies() {
               return null;
             })}
           </div>
-          
         </>
       );
     }
@@ -132,7 +119,7 @@ export function Movies() {
                 Find just movies
               </label>
             </div>
-            <div className="form-check ms-5">
+            <div className="form-check ms-3">
               <input
                 className="form-check-input"
                 type="radio"
@@ -146,7 +133,21 @@ export function Movies() {
                 Find just series
               </label>
             </div>
-            <div className="form-check ms-5">
+            <div className="form-check ms-3">
+              <input
+                className="form-check-input"
+                type="radio"
+                name="type"
+                value="game"
+              />
+              <label
+                className="form-check-label text-light"
+                htmlFor="exampleRadios2"
+              >
+                Find just games
+              </label>
+            </div>
+            <div className="form-check ms-3">
               <input
                 className="form-check-input"
                 type="radio"
@@ -158,7 +159,7 @@ export function Movies() {
                 className="form-check-label text-light"
                 htmlFor="exampleRadios2"
               >
-                Both options
+                All options
               </label>
             </div>
           </div>
@@ -180,19 +181,30 @@ export function Movies() {
           </div>
         </div>
       </form>
-      {res()}
-      <div className="row justify-content-around fixed-bottom">
-            <div className="col-4 d-flex justify-content-center">
-              <button className="btn btn-info btn-lg" onClick={before}>
-                Before Page
-              </button>
-            </div>
-            <div className="col-4 d-flex justify-content-center">
-              <button className="btn btn-info btn-lg" onClick={next}>
-                Next Page
-              </button>
-            </div>
+      <div className="alert alert-info fs-5" role="alert">
+        You can to visit my website where you can find other projects that I have developed. {" "}
+        <a href="https://diego-008.github.io/my-web-site/" target="_blank" rel="noreferrer" className="alert-link">
+          View website
+        </a>
+      </div>
+      {validation()}
+      <div className="fix">
+        <div className="row justify-content-around fixed-bottom">
+          <div className="col-4 d-flex justify-content-center">
+            <button
+              className="btn btn-info btn-lg rounded-pill"
+              onClick={before}
+            >
+              Before Page
+            </button>
           </div>
+          <div className="col-4 d-flex justify-content-center">
+            <button className="btn btn-info btn-lg rounded-pill" onClick={next}>
+              Next Page
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

@@ -8,4 +8,8 @@ button:active {
   /* Scaling button to 0.98 to its original size */
 }
 
+.fix{
+  height: 48px;
+}
+
 
