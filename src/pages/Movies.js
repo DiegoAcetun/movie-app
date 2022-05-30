@@ -3,21 +3,16 @@ import "./CSS/Movies.css";
 import Card from "../components/Card";
 export function Movies() {
   const apiKey = process.env.REACT_APP_KEY_OMDB;
-  const [searchValue, setSearchValue] = useState("pan");
   const [movies, setMovies] = useState([]);
-  const [type, setType] = useState("");
-  const [bienvenida, setBienvenida] = useState(true);
-  const [page, setPage] = useState(1);
   const search = useRef();
   // TODO: usar state para la respuesta
-  const [response, setResponse] = useState("False");
+  const [response, setResponse] = useState("");
   const [stateMovies, setStateMovies] = useState({
     searchValue: "pan",
     bienvenida: true,
     type: "",
     page: 1,
   });
-  console.log("respuesta");
   useEffect(() => {
     if (stateMovies.bienvenida) {
       return;
@@ -32,7 +27,7 @@ export function Movies() {
         const data = await response.json();
         console.log(data.Response);
         setResponse(data.Response);
-
+        console.log(stateMovies.page);
         setMovies(data.Search);
       } catch (error) {
         console.log(error);
@@ -45,11 +40,7 @@ export function Movies() {
     e.preventDefault();
     // console.log(searchValue.current.value);
     // console.log(search.current.value, 'aaa');
-    setSearchValue(search.current.value);
     const type = document.querySelector('input[name="type"]:checked').value;
-    setType(type);
-    setBienvenida(false);
-    setPage(1);
     setStateMovies({
       ...stateMovies,
       searchValue: search.current.value,
@@ -67,14 +58,12 @@ export function Movies() {
 
   function next() {
     if (response === "True") {
-      setPage(page + 1);
-      setStateMovies({ ...stateMovies, page: page + 1 });
+      setStateMovies({ ...stateMovies, page: stateMovies.page + 1 });
     }
   }
   function before() {
-    if (page > 1) {
-      setPage(page - 1);
-      setStateMovies({ ...stateMovies, page: page - 1 });
+    if (stateMovies.page > 1) {
+      setStateMovies({ ...stateMovies, page: stateMovies.page - 1 });
     }
   }
   function res() {
@@ -94,43 +83,33 @@ export function Movies() {
           sorry No results found
         </h1>
       );
+    } else if (response === "True") {
+      console.log("malll");
+      const keys = [];
+      return (
+        <>
+          <div className="row justify-content-center align-items-center">
+            {movies.map((movie) => {
+              //verificando si todavia no esta esta pelicula en el array
+              if (!keys.includes(movie.imdbID)) {
+                keys.push(movie.imdbID);
+                return (
+                  <Card
+                    image={movie.Poster}
+                    title={movie.Title}
+                    type={movie.Type}
+                    year={movie.Year}
+                    key={movie.imdbID}
+                  />
+                );
+              }
+              return null;
+            })}
+          </div>
+          
+        </>
+      );
     }
-    console.log("malll");
-    const keys = [];
-    return (
-      <>
-        <div className="row justify-content-center align-items-center">
-          {movies.map((movie) => {
-            //verificando si todavia no esta esta pelicula en el array
-            if (!keys.includes(movie.imdbID)) {
-              keys.push(movie.imdbID);
-              return (
-                <Card
-                  image={movie.Poster}
-                  title={movie.Title}
-                  type={movie.Type}
-                  year={movie.Year}
-                  key={movie.imdbID}
-                />
-              );
-            }
-            return null;
-          })}
-        </div>
-        <div className="row justify-content-around fixed-bottom">
-          <div className="col-4 d-flex justify-content-center">
-            <button className="btn btn-info btn-lg" onClick={before}>
-              Before Page
-            </button>
-          </div>
-          <div className="col-4 d-flex justify-content-center">
-            <button className="btn btn-info btn-lg" onClick={next}>
-              Next Page
-            </button>
-          </div>
-        </div>
-      </>
-    );
   }
 
   return (
@@ -202,6 +181,18 @@ export function Movies() {
         </div>
       </form>
       {res()}
+      <div className="row justify-content-around fixed-bottom">
+            <div className="col-4 d-flex justify-content-center">
+              <button className="btn btn-info btn-lg" onClick={before}>
+                Before Page
+              </button>
+            </div>
+            <div className="col-4 d-flex justify-content-center">
+              <button className="btn btn-info btn-lg" onClick={next}>
+                Next Page
+              </button>
+            </div>
+          </div>
     </div>
   );
 }
