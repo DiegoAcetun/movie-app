@@ -11,19 +11,25 @@ button:active {
 .fix{
   height: 48px;
 }
-.neon{
+/* .neon{
   text-shadow:
-  /* borde de letra */
+  borde de letra
 		0 0 5px rgb(6, 196, 243),
 		0 0 10px rgb(6, 196, 243),
 		0 0 20px rgb(6, 196, 243),
-    /* sombreado */
+    sombreado
 		0 0 40px rgb(1, 103, 155),
 		0 0 80px rgb(1, 103, 155),
 		0 0 90px rgb(1, 103, 155),
 		0 0 100px rgb(1, 103, 155),
 		0 0 140px rgb(1, 103, 155),
 		0 0 180px rgb(1, 103, 155);
+} */
+
+.ventana{
+  position: fixed;
+  background: chartreuse;
+  left: calc(85vw/2);
+  top: calc(85vh/2);
+  z-index: 50;
 }
-
-

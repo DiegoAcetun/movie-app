@@ -1,12 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import "./CSS/Movies.css";
 import Card from "../components/Card";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 export function Movies() {
   console.log("Movies.js");
   const apiKey = process.env.REACT_APP_KEY_OMDB;
   const [movies, setMovies] = useState([]);
   const search = useRef();
-  // TODO: usar state para la respuesta
   const [response, setResponse] = useState("");
   const [stateMovies, setStateMovies] = useState({
     searchValue: "disney",
@@ -100,111 +101,128 @@ export function Movies() {
   }
 
   return (
-    <div className="container bienvenida">
-      <h1 className="text-light text-center mt-3 neon">MOVIES APP</h1>
-      <form onSubmit={onSubmit}>
-        <div className="row justify-content-center">
-          <div className="col-md-8 d-flex justify-content-center">
-            <div className="form-check">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="type"
-                value="movie"
-              />
-              <label
-                className="form-check-label text-light"
-                htmlFor="exampleRadios1"
-              >
-                Find just movies
-              </label>
-            </div>
-            <div className="form-check ms-3">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="type"
-                value="series"
-              />
-              <label
-                className="form-check-label text-light"
-                htmlFor="exampleRadios2"
-              >
-                Find just series
-              </label>
-            </div>
-            <div className="form-check ms-3">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="type"
-                value="game"
-              />
-              <label
-                className="form-check-label text-light"
-                htmlFor="exampleRadios2"
-              >
-                Find just games
-              </label>
-            </div>
-            <div className="form-check ms-3">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="type"
-                value=""
-                defaultChecked
-              />
-              <label
-                className="form-check-label text-light"
-                htmlFor="exampleRadios2"
-              >
-                All options
-              </label>
+    <>
+      <div className="ventana">
+        <h1 className="text-light">NNNN</h1>
+        <FontAwesomeIcon icon={faTriangleExclamation} size="4x" />
+        {/* <FontAwesomeIcon icon={['fas', 'faTriangleExclamation']} /> */}
+        
+      </div>
+      <div className="container bienvenida">
+        <h1 className="text-light text-center mt-3 neon">MOVIES APP</h1>
+        <form onSubmit={onSubmit}>
+          <div className="row justify-content-center">
+            <div className="col-md-8 d-flex justify-content-center">
+              <div className="form-check">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  name="type"
+                  value="movie"
+                />
+                <label
+                  className="form-check-label text-light"
+                  htmlFor="exampleRadios1"
+                >
+                  Find just movies
+                </label>
+              </div>
+              <div className="form-check ms-3">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  name="type"
+                  value="series"
+                />
+                <label
+                  className="form-check-label text-light"
+                  htmlFor="exampleRadios2"
+                >
+                  Find just series
+                </label>
+              </div>
+              <div className="form-check ms-3">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  name="type"
+                  value="game"
+                />
+                <label
+                  className="form-check-label text-light"
+                  htmlFor="exampleRadios2"
+                >
+                  Find just games
+                </label>
+              </div>
+              <div className="form-check ms-3">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  name="type"
+                  value=""
+                  defaultChecked
+                />
+                <label
+                  className="form-check-label text-light"
+                  htmlFor="exampleRadios2"
+                >
+                  All options
+                </label>
+              </div>
             </div>
           </div>
+          <div className="row justify-content-center my-2">
+            <div className="col-lg-5">
+              <div className="input-group mb-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="search by title"
+                  ref={search}
+                  // defaultValue={search}
+                />
+                <button className="btn btn-info" type="submit">
+                  Search
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div className="alert alert-info fs-5" role="alert">
+          You can to visit my website where you can find other projects that I
+          have developed.{" "}
+          <a
+            href="https://diego-008.github.io/my-web-site/"
+            target="_blank"
+            rel="noreferrer"
+            className="alert-link"
+          >
+            View website
+          </a>
         </div>
-        <div className="row justify-content-center my-2">
-          <div className="col-lg-5">
-            <div className="input-group mb-3">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="search by title"
-                ref={search}
-                // defaultValue={search}
-              />
-              <button className="btn btn-info" type="submit">
-                Search
+        {validation()}
+        <div className="fix">
+          <div className="row justify-content-around fixed-bottom">
+            <div className="col-4 d-flex justify-content-center">
+              <button
+                className="btn btn-info btn-lg rounded-pill"
+                onClick={before}
+              >
+                Before Page
+              </button>
+            </div>
+            <div className="col-4 d-flex justify-content-center">
+              <button
+                className="btn btn-info btn-lg rounded-pill"
+                onClick={next}
+              >
+                Next Page
               </button>
             </div>
           </div>
         </div>
-      </form>
-      <div className="alert alert-info fs-5" role="alert">
-        You can to visit my website where you can find other projects that I have developed. {" "}
-        <a href="https://diego-008.github.io/my-web-site/" target="_blank" rel="noreferrer" className="alert-link">
-          View website
-        </a>
       </div>
-      {validation()}
-      <div className="fix">
-        <div className="row justify-content-around fixed-bottom">
-          <div className="col-4 d-flex justify-content-center">
-            <button
-              className="btn btn-info btn-lg rounded-pill"
-              onClick={before}
-            >
-              Before Page
-            </button>
-          </div>
-          <div className="col-4 d-flex justify-content-center">
-            <button className="btn btn-info btn-lg rounded-pill" onClick={next}>
-              Next Page
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+    </>
   );
 }
