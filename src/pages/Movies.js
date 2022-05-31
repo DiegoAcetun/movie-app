@@ -1,37 +1,43 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import "./CSS/Movies.css";
+import Context from "../context/Context";
 import Card from "../components/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 export function Movies() {
-  console.log("Movies.js");
+  // console.log("Movies.js");
+  const { user, number, updateUser, updataNumber } = useContext(Context);
   const apiKey = process.env.REACT_APP_KEY_OMDB;
   const [movies, setMovies] = useState([]);
   const search = useRef();
   const [response, setResponse] = useState("");
   const [stateMovies, setStateMovies] = useState({
-    searchValue: "disney",
+    searchValue: "",
     bienvenida: true,
     type: "",
     page: 29,
   });
   useEffect(() => {
     if (stateMovies.bienvenida) {
+      updataNumber("number85");
+      console.log("actualizando", user, number);
       return;
     }
+  console.log("Mzaza", user, number);
     async function fetchData() {
       try {
         const URL = `https://www.omdbapi.com/?apikey=${apiKey}&s=${stateMovies.searchValue}&type=${stateMovies.type}&page=${stateMovies.page}`;
         const response = await fetch(URL);
         const data = await response.json();
         setResponse(data.Response);
+        // console.log(data.Search);
         setMovies(data.Search);
       } catch (error) {
         console.log(error);
       }
     }
     fetchData();
-  }, [stateMovies, apiKey]);
+  }, [stateMovies, apiKey, number]);
 
   function onSubmit(e) {
     e.preventDefault();
@@ -73,6 +79,10 @@ export function Movies() {
         </h1>
       );
     }
+
+    function onClick(e) {
+      console.log(e.target.id);
+    }
     if (response === "True") {
       const keys = [];
       return (
@@ -89,6 +99,8 @@ export function Movies() {
                     type={movie.Type}
                     year={movie.Year}
                     key={movie.imdbID}
+                    id={movie.imdbID}
+                    onClick={onClick}
                   />
                 );
               }
@@ -104,8 +116,8 @@ export function Movies() {
     <>
       <div className="ventana">
         <h1 className="text-light">NNNN</h1>
-        <FontAwesomeIcon icon={faTriangleExclamation} size="4x" />
-        {/* <FontAwesomeIcon icon={['fas', 'faTriangleExclamation']} /> */}
+        {/* <FontAwesomeIcon icon={faXmark} size="4x" /> */}
+        {/* <FontAwesomeIcon icon={['fas', 'faXmark']} /> */}
         
       </div>
       <div className="container bienvenida">
