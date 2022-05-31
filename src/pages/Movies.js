@@ -59,7 +59,7 @@ export function Movies() {
     if (stateMovies.bienvenida) {
       return (
         <div className="bienvenida">
-          <h1 className="text-light text-uppercase text-center">
+          <h1 className="text-light text-uppercase text-center neon">
             you can do a search in the box above
           </h1>
         </div>
@@ -101,7 +101,7 @@ export function Movies() {
 
   return (
     <div className="container bienvenida">
-      <h1 className="text-light text-center mt-3">MOVIES APP</h1>
+      <h1 className="text-light text-center mt-3 neon">MOVIES APP</h1>
       <form onSubmit={onSubmit}>
         <div className="row justify-content-center">
           <div className="col-md-8 d-flex justify-content-center">
