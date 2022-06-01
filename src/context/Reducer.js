@@ -2,15 +2,25 @@ export default (state, action) => {
   const { payload, type } = action;
 
   switch (type) {
-    case "updateUser":
+    case "updateMovies":
       return {
         ...state,
-        user: payload,
+        listMovies: payload,
       };
-    case "updateNumber":
+    case "updateCurrentMovie":
       return {
         ...state,
-        number: payload,
+        currentMovie: payload,
+      };
+    case "updateDisplay":
+      return {
+        ...state,
+        display: payload,
+      };
+    case "updateCurrentMovieProps":
+      return {
+        ...state,
+        currentMovieProps: payload,
       };
     default:
       return state;

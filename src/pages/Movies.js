@@ -6,7 +6,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 export function Movies() {
   // console.log("Movies.js");
-  const { user, number, updateUser, updataNumber } = useContext(Context);
+  const {
+    currentMovie,
+    display,
+    updateDisplay,
+    currentMovieProps,
+    updateCurrentMovieProps,
+  } = useContext(Context);
   const apiKey = process.env.REACT_APP_KEY_OMDB;
   const [movies, setMovies] = useState([]);
   const search = useRef();
@@ -19,11 +25,8 @@ export function Movies() {
   });
   useEffect(() => {
     if (stateMovies.bienvenida) {
-      updataNumber("number85");
-      console.log("actualizando", user, number);
       return;
     }
-  console.log("Mzaza", user, number);
     async function fetchData() {
       try {
         const URL = `https://www.omdbapi.com/?apikey=${apiKey}&s=${stateMovies.searchValue}&type=${stateMovies.type}&page=${stateMovies.page}`;
@@ -37,8 +40,31 @@ export function Movies() {
       }
     }
     fetchData();
-  }, [stateMovies, apiKey, number]);
+  }, [stateMovies, apiKey]);
 
+  useEffect(() => {
+    if(response === "False" || response === ""){
+      return;
+    }
+    console.log("#jajaj");
+    async function fetchData() {
+      try {
+        const URL = `https://www.omdbapi.com/?apikey=${apiKey}&i=${currentMovie}`;
+        const response = await fetch(URL);
+        const data = await response.json();
+        console.log(data);
+        // updateCurrentMovieProps(data);
+      } catch (error) {
+        console.log(error);
+      }
+
+    }
+    fetchData();
+    console.log("currentMovie", currentMovie);
+  }, [currentMovie, apiKey]);
+  useEffect(() => {
+    console.log("currentMovieProps", currentMovieProps);
+  }, [currentMovieProps]);
   function onSubmit(e) {
     e.preventDefault();
     const type = document.querySelector('input[name="type"]:checked').value;
@@ -49,7 +75,6 @@ export function Movies() {
       type: type,
       page: 1,
     });
-    // search.current.value = "";
   }
 
   function next() {
@@ -79,10 +104,6 @@ export function Movies() {
         </h1>
       );
     }
-
-    function onClick(e) {
-      console.log(e.target.id);
-    }
     if (response === "True") {
       const keys = [];
       return (
@@ -92,6 +113,7 @@ export function Movies() {
               //verificando si todavia no esta esta pelicula en el array
               if (!keys.includes(movie.imdbID)) {
                 keys.push(movie.imdbID);
+                // console.log(listMovies);
                 return (
                   <Card
                     image={movie.Poster}
@@ -100,7 +122,6 @@ export function Movies() {
                     year={movie.Year}
                     key={movie.imdbID}
                     id={movie.imdbID}
-                    onClick={onClick}
                   />
                 );
               }
@@ -114,11 +135,10 @@ export function Movies() {
 
   return (
     <>
-      <div className="ventana">
-        <h1 className="text-light">NNNN</h1>
+      <div className={`ventana`}>
+        <p>zaza</p>
         {/* <FontAwesomeIcon icon={faXmark} size="4x" /> */}
         {/* <FontAwesomeIcon icon={['fas', 'faXmark']} /> */}
-        
       </div>
       <div className="container bienvenida">
         <h1 className="text-light text-center mt-3 neon">MOVIES APP</h1>

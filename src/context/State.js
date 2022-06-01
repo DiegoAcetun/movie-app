@@ -3,28 +3,42 @@ import Context from "./Context";
 import Reducer from "./Reducer";
 const State = (props) => {
   const initialState = {
-    user: "user44",
-    number: "number00",
+    listMovies: [],
+    currentMovie: null,
+    currentMovieProps: {},
+    display: "d-none"
   };
   const [state, dispatch] = useReducer(Reducer, initialState);
 
-  const updateUser =  (user) => {
+  const updateMovies =  (movies) => {
     // console.log("getUsers");
-    dispatch({ type: "updateUser", payload: user });
+    dispatch({ type: "updateMovies", payload: movies });
   };
   
-  const updataNumber =  (number) => {
-    dispatch({ type: "updateNumber", payload: number });
+  const updateCurrentMovie =  (currentMovie) => {
+    dispatch({ type: "updateCurrentMovie", payload: currentMovie });
     // console.log("getProfile");
+  };
+
+  const updateDisplay = (display) => {
+    dispatch({ type: "updateDisplay", payload: display });
+  };
+
+  const updateCurrentMovieProps = (currentMovieProps) => {
+    dispatch({ type: "updateCurrentMovieProps", payload: currentMovieProps });
   };
 
   return (
     <Context.Provider
       value={{
-        user: state.user,
-        number: state.number,
-        updateUser,
-        updataNumber,
+        listMovies: state.listMovies,
+        currentMovie: state.currentMovie,
+        updateMovies,
+        updateCurrentMovie,
+        display: state.display,
+        updateDisplay, 
+        currentMovieProps: state.currentMovieProps,
+        updateCurrentMovieProps
       }}
     >
       {props.children}
