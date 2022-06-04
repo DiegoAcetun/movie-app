@@ -12,11 +12,13 @@ export function Movies() {
     updateDisplay,
     currentMovieProps,
     updateCurrentMovieProps,
+    updateLoading,
   } = useContext(Context);
   const apiKey = process.env.REACT_APP_KEY_OMDB;
   const [movies, setMovies] = useState([]);
   const search = useRef();
   const [response, setResponse] = useState("");
+
   const [stateMovies, setStateMovies] = useState({
     searchValue: "",
     bienvenida: true,
@@ -43,40 +45,35 @@ export function Movies() {
   }, [stateMovies, apiKey]);
 
   useEffect(() => {
-    if(response === "False" || response === ""){
+    if (response === "False" || response === "") {
       return;
     }
-    console.log("#jajaj");
+    // console.log("#jajaj");
     async function fetchData() {
       try {
+        console.log("#jajaj");
+        updateLoading(true);
         const URL = `https://www.omdbapi.com/?apikey=${apiKey}&i=${currentMovie}`;
         const response = await fetch(URL);
         const data = await response.json();
-        console.log(data);
-        // updateCurrentMovieProps(data);
+        // console.log(data);
+        const { Title, Actors, Awards, Country, Genre } = data;
+        // console.log(Title, Actors, Awards, Country, Genre);
+        updateCurrentMovieProps({
+          Title,
+          Actors,
+          Awards,
+          Country,
+          Genre,
+        });
+        updateLoading(false);
       } catch (error) {
         console.log(error);
       }
-
     }
     fetchData();
-    console.log("currentMovie", currentMovie);
+    // console.log("currentMovie", currentMovie);
   }, [currentMovie, apiKey]);
-  useEffect(() => {
-    console.log("currentMovieProps", currentMovieProps);
-  }, [currentMovieProps]);
-  function onSubmit(e) {
-    e.preventDefault();
-    const type = document.querySelector('input[name="type"]:checked').value;
-    setStateMovies({
-      ...stateMovies,
-      searchValue: search.current.value,
-      bienvenida: false,
-      type: type,
-      page: 1,
-    });
-  }
-
   function next() {
     if (response === "True") {
       setStateMovies({ ...stateMovies, page: stateMovies.page + 1 });
@@ -105,11 +102,13 @@ export function Movies() {
       );
     }
     if (response === "True") {
+      console.log("pintando");
       const keys = [];
       return (
         <>
           <div className="row justify-content-center align-items-center">
             {movies.map((movie) => {
+              console.log("ciclo");
               //verificando si todavia no esta esta pelicula en el array
               if (!keys.includes(movie.imdbID)) {
                 keys.push(movie.imdbID);
@@ -133,13 +132,47 @@ export function Movies() {
     }
   }
 
+  function onSubmit(e) {
+    e.preventDefault();
+    const type = document.querySelector('input[name="type"]:checked').value;
+    setStateMovies({
+      ...stateMovies,
+      searchValue: search.current.value,
+      bienvenida: false,
+      type: type,
+      page: 1,
+    });
+  }
+
+  function hide() {
+    updateDisplay("d-none");
+  }
+  function ll() {
+    if (display === "d-none") {
+      // console.log("displayeeeee");
+      return null;
+    } else if (display === "d-inline-block") {
+      // console.log("displayzazaz");
+      return (
+        <div
+          className={`ventana position-fixed top-50 start-50 translate-middle`}
+        >
+          <p>Title: {currentMovieProps.Title}</p>
+          <p>Actors: {currentMovieProps.Actors}</p>
+          <p>Awards: {currentMovieProps.Awards}</p>
+          <p>Country: {currentMovieProps.Country}</p>
+          <p>Genre: {currentMovieProps.Genre}</p>
+          <button className="icon position-absolute top-0 end-0" onClick={hide}>
+            <FontAwesomeIcon icon={faXmark} />
+          </button>
+        </div>
+      );
+    }
+  }
+  // console.log("nnnn");
   return (
     <>
-      <div className={`ventana`}>
-        <p>zaza</p>
-        {/* <FontAwesomeIcon icon={faXmark} size="4x" /> */}
-        {/* <FontAwesomeIcon icon={['fas', 'faXmark']} /> */}
-      </div>
+      {ll()};
       <div className="container bienvenida">
         <h1 className="text-light text-center mt-3 neon">MOVIES APP</h1>
         <form onSubmit={onSubmit}>

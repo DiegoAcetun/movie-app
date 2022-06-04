@@ -22,6 +22,11 @@ export default (state, action) => {
         ...state,
         currentMovieProps: payload,
       };
+    case "updateLoading":
+      return {
+        ...state,
+        loading: payload,
+      };
     default:
       return state;
   }

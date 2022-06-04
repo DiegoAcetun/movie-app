@@ -5,8 +5,9 @@ const State = (props) => {
   const initialState = {
     listMovies: [],
     currentMovie: null,
-    currentMovieProps: {},
-    display: "d-none"
+    currentMovieProps: {Title: "", Actors: "", Awards: "", Country: "", Genre: ""},
+    display: "d-none",
+    loading: null,
   };
   const [state, dispatch] = useReducer(Reducer, initialState);
 
@@ -28,6 +29,9 @@ const State = (props) => {
     dispatch({ type: "updateCurrentMovieProps", payload: currentMovieProps });
   };
 
+  const updateLoading = (loading) => {
+    dispatch({ type: "updateLoading", payload: loading });
+  };
   return (
     <Context.Provider
       value={{
@@ -38,7 +42,9 @@ const State = (props) => {
         display: state.display,
         updateDisplay, 
         currentMovieProps: state.currentMovieProps,
-        updateCurrentMovieProps
+        updateCurrentMovieProps,
+        loading: state.loading,
+        updateLoading,
       }}
     >
       {props.children}
