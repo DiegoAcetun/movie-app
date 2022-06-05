@@ -5,20 +5,13 @@ import Card from "../components/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 export function Movies() {
-  // console.log("Movies.js");
-  const {
-    currentMovie,
-    display,
-    updateDisplay,
-    currentMovieProps,
-    updateCurrentMovieProps,
-    updateLoading,
-  } = useContext(Context);
   const apiKey = process.env.REACT_APP_KEY_OMDB;
   const [movies, setMovies] = useState([]);
   const search = useRef();
   const [response, setResponse] = useState("");
-
+  const [loading, setLoading] = useState(true);
+  const [prueba, setPrueba] = useState("false");
+  const refPrueba = useRef();
   const [stateMovies, setStateMovies] = useState({
     searchValue: "",
     bienvenida: true,
@@ -31,12 +24,14 @@ export function Movies() {
     }
     async function fetchData() {
       try {
+        setLoading(true);
         const URL = `https://www.omdbapi.com/?apikey=${apiKey}&s=${stateMovies.searchValue}&type=${stateMovies.type}&page=${stateMovies.page}`;
         const response = await fetch(URL);
         const data = await response.json();
         setResponse(data.Response);
         // console.log(data.Search);
         setMovies(data.Search);
+        setLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -44,36 +39,6 @@ export function Movies() {
     fetchData();
   }, [stateMovies, apiKey]);
 
-  useEffect(() => {
-    if (response === "False" || response === "") {
-      return;
-    }
-    // console.log("#jajaj");
-    async function fetchData() {
-      try {
-        console.log("#jajaj");
-        updateLoading(true);
-        const URL = `https://www.omdbapi.com/?apikey=${apiKey}&i=${currentMovie}`;
-        const response = await fetch(URL);
-        const data = await response.json();
-        // console.log(data);
-        const { Title, Actors, Awards, Country, Genre } = data;
-        // console.log(Title, Actors, Awards, Country, Genre);
-        updateCurrentMovieProps({
-          Title,
-          Actors,
-          Awards,
-          Country,
-          Genre,
-        });
-        updateLoading(false);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    fetchData();
-    // console.log("currentMovie", currentMovie);
-  }, [currentMovie, apiKey]);
   function next() {
     if (response === "True") {
       setStateMovies({ ...stateMovies, page: stateMovies.page + 1 });
@@ -134,47 +99,41 @@ export function Movies() {
 
   function onSubmit(e) {
     e.preventDefault();
-    const type = document.querySelector('input[name="type"]:checked').value;
-    setStateMovies({
-      ...stateMovies,
-      searchValue: search.current.value,
-      bienvenida: false,
-      type: type,
-      page: 1,
-    });
+    // const type = document.querySelector('input[name="type"]:checked').value;
+    // setStateMovies({
+    //   ...stateMovies,
+    //   searchValue: search.current.value,
+    //   bienvenida: false,
+    //   type: type,
+    //   page: 1,
+    // });
+    // console.log(refPrueba.current.textContent);
+    // refPrueba.current.textContent = search.current.value;
+    // console.log(typeof refPrueba.current.className);
+    // console.log(refPrueba.current.classList.contains("mt-30"));
+    if(refPrueba.current.classList.contains("d-block")){
+      refPrueba.current.classList.remove("d-block");
+      refPrueba.current.classList.add("d-none");
+    }else if(refPrueba.current.classList.contains("d-none")){
+      refPrueba.current.classList.remove("d-none");
+      refPrueba.current.classList.add("d-block");
+    }
+
+    // refPrueba.current.className = "text-light";
   }
 
-  function hide() {
-    updateDisplay("d-none");
-  }
-  function ll() {
-    if (display === "d-none") {
-      // console.log("displayeeeee");
-      return null;
-    } else if (display === "d-inline-block") {
-      // console.log("displayzazaz");
-      return (
-        <div
-          className={`ventana position-fixed top-50 start-50 translate-middle`}
-        >
-          <p>Title: {currentMovieProps.Title}</p>
-          <p>Actors: {currentMovieProps.Actors}</p>
-          <p>Awards: {currentMovieProps.Awards}</p>
-          <p>Country: {currentMovieProps.Country}</p>
-          <p>Genre: {currentMovieProps.Genre}</p>
-          <button className="icon position-absolute top-0 end-0" onClick={hide}>
-            <FontAwesomeIcon icon={faXmark} />
-          </button>
-        </div>
-      );
-    }
-  }
-  // console.log("nnnn");
+  function hide() {} // console.log("nnnn");
+  const keys = [];
+  // if(!loading){
+  //   return (
+  //     <h1 className="text-light">cargando</h1>
+  //   )
+  // }
   return (
     <>
-      {ll()};
+      {console.log("stateMovies")}
       <div className="container bienvenida">
-        <h1 className="text-light text-center mt-3 neon">MOVIES APP</h1>
+        <h1 className="text-light text-center mt-3 neon d-none" ref={refPrueba}>jjjj</h1>
         <form onSubmit={onSubmit}>
           <div className="row justify-content-center">
             <div className="col-md-8 d-flex justify-content-center">
@@ -266,7 +225,57 @@ export function Movies() {
             View website
           </a>
         </div>
-        {validation()}
+        {/* {validation()} */}
+        {stateMovies.bienvenida ? (
+          (console.log("bienvenida"),
+          (
+            <div className="bienvenida">
+              <h1 className="text-light text-uppercase text-center neon">
+                you can do a search in the box above
+              </h1>
+            </div>
+          ))
+        ) : loading ? (
+          (console.log("cargando"),
+          (
+            <div className="text-center">
+              <h1 className="text-light">cargando...</h1>
+              <div className="spinner-border text-info fs-1" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          ))
+        ) : response === "False" ? (
+          <h1 className="text-uppercase text-center text-light">
+            sorry No results found
+          </h1>
+        ) : response === "True" ? (
+          // console.log("pintando"),
+
+          <>
+            <div className="row justify-content-center align-items-center">
+              {movies.map((movie) => {
+                console.log("ciclo");
+                //verificando si todavia no esta esta pelicula en el array
+                if (!keys.includes(movie.imdbID)) {
+                  keys.push(movie.imdbID);
+                  // console.log(listMovies);
+                  return (
+                    <Card
+                      image={movie.Poster}
+                      title={movie.Title}
+                      type={movie.Type}
+                      year={movie.Year}
+                      key={movie.imdbID}
+                      id={movie.imdbID}
+                    />
+                  );
+                }
+                return null;
+              })}
+            </div>
+          </>
+        ) : null}
         <div className="fix">
           <div className="row justify-content-around fixed-bottom">
             <div className="col-4 d-flex justify-content-center">
