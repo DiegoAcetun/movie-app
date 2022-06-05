@@ -111,6 +111,7 @@ export function Movies() {
     // refPrueba.current.textContent = search.current.value;
     // console.log(typeof refPrueba.current.className);
     // console.log(refPrueba.current.classList.contains("mt-30"));
+    // TODO: estaba comparando remover clases vs renderizado condicional
     if(refPrueba.current.classList.contains("d-block")){
       refPrueba.current.classList.remove("d-block");
       refPrueba.current.classList.add("d-none");
