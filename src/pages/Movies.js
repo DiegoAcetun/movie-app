@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import "./CSS/Movies.css";
 import Card from "../components/Card";
 import Alert from "../components/Alert";
+import Form from "../components/Form";
+import Cards from "../components/Cards";
 export function Movies() {
   console.log("Movies.js");
   const [movies, setMovies] = useState([]);
@@ -12,34 +14,36 @@ export function Movies() {
   const [page, setPage] = useState(1);
   const [bienvenida, setBienvenida] = useState(true);
 
-  useEffect(() => {
-    if (bienvenida) {
-      return;
-    }
-    async function fetchData() {
-      try {
-        const apiKey = process.env.REACT_APP_KEY_OMDB;
-        const URL = `https://www.omdbapi.com/?apikey=${apiKey}&s=${searchValue}&type=${type}&page=${page}`;
-        const response = await fetch(URL);
-        const data = await response.json();
-        setResponse(data.Response);
-        setMovies(data.Search);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    fetchData();
-  }, [searchValue, type, page, bienvenida]);
+  // useEffect(() => {
+  //   if (bienvenida) {
+  //     return;
+  //   }
+  //   async function fetchData() {
+  //     try {
+  //       const apiKey = process.env.REACT_APP_KEY_OMDB;
+  //       const URL = `https://www.omdbapi.com/?apikey=${apiKey}&s=${searchValue}&type=${type}&page=${page}`;
+  //       const response = await fetch(URL);
+  //       const data = await response.json();
+  //       setResponse(data.Response);
+  //       setMovies(data.Search);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  //   fetchData();
+  // }, [searchValue, type, page, bienvenida]);
 
   function onSubmit(e) {
     e.preventDefault();
-    const type = document.querySelector('input[name="type"]:checked').value;
-    setBienvenida(false);
-    setPage(1);
-    setType(type);
-    setSearchValue(search.current.value);
-    // console.log(search.current.value);
-    search.current.value = "";
+    // const type = document.querySelector('input[name="type"]:checked').value;
+    // console.log(type);
+    console.log(document.form.type.value);
+    // setBienvenida(false);
+    // setPage(1);
+    // setType(type);
+    // setSearchValue(search.current.value);
+    // search.current.value = "";
+    console.log("submit");
   }
 
   function next() {
@@ -56,7 +60,8 @@ export function Movies() {
   return (
     <div className="container bienvenida">
       <h1 className="text-light text-center mt-3">MOVIES APP</h1>
-      <form onSubmit={onSubmit}>
+
+      {/* <form onSubmit={onSubmit}>
         <div className="row justify-content-center">
           <div className="col-md-8 d-flex justify-content-center">
             <div className="form-check">
@@ -134,10 +139,13 @@ export function Movies() {
             </div>
           </div>
         </div>
-      </form>
-      {/* {(search.current.value = "inicio")} */}
-      <Alert message={"search.current.value"} />
-      {bienvenida ? (
+      </form> */}
+      <Form onSubmit={onSubmit} />
+      <Alert
+        message="You can to visit my website where you can find other projects that I have developed."
+        messageLink="View website"
+      />
+      {/* {bienvenida ? (
         <div className="bienvenida">
           <h1 className="text-light text-uppercase text-center">
             you can do a search in the box above
@@ -150,10 +158,7 @@ export function Movies() {
       ) : response === "True" ? (
         <>
           <div className="row justify-content-center align-items-center">
-            {/* let keys = [], */}
             {movies.map((movie) => {
-              // const keys  = [];
-              //verificando si todavia no esta esta pelicula en el array
               if (!keys.includes(movie.imdbID)) {
                 keys.push(movie.imdbID);
                 return (
@@ -172,7 +177,8 @@ export function Movies() {
         </>
       ) : (
         <></>
-      )}
+      )} */}
+      <Cards />
       <div className="fix">
         <div className="row justify-content-around fixed-bottom">
           <div className="col-4 d-flex justify-content-center">
