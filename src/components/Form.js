@@ -1,12 +1,14 @@
-import React, { useRef } from 'react';
-function Form({ onSubmit }) {
+import React, { useRef } from "react";
+function Form({ handleSubmit }) {
+  console.log("montando formulario");
   const search = useRef();
-  function handleSubmit(e) {
-    e.preventDefault();
-    console.log("submit");
-  }
+  // console.log(searchValue);
+  // function handleSubmit(e) {
+  //   e.preventDefault();
+  //   console.log("submit aaa");
+  // }
   return (
-    <form onSubmit={onSubmit} name="form">
+    <form onSubmit={handleSubmit} name="form">
       <div className="row justify-content-center">
         <div className="col-md-8 d-flex justify-content-center">
           <div className="form-check">
@@ -76,7 +78,7 @@ function Form({ onSubmit }) {
               className="form-control"
               placeholder="search by title"
               ref={search}
-              // defaultValue={search.current.value}
+              name="search"
             />
             <button className="btn btn-info" type="submit">
               Search

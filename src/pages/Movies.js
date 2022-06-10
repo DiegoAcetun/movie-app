@@ -4,8 +4,9 @@ import Card from "../components/Card";
 import Alert from "../components/Alert";
 import Form from "../components/Form";
 import Cards from "../components/Cards";
+import { FormProvider } from "../context/FormContext";
 export function Movies() {
-  console.log("Movies.js");
+  console.log("m pages");
   const [movies, setMovies] = useState([]);
   const search = useRef("");
   const [response, setResponse] = useState("");
@@ -33,19 +34,24 @@ export function Movies() {
   //   fetchData();
   // }, [searchValue, type, page, bienvenida]);
 
-  function onSubmit(e) {
-    e.preventDefault();
-    // const type = document.querySelector('input[name="type"]:checked').value;
-    // console.log(type);
-    console.log(document.form.type.value);
-    // setBienvenida(false);
-    // setPage(1);
-    // setType(type);
-    // setSearchValue(search.current.value);
-    // search.current.value = "";
-    console.log("submit");
-  }
-
+  // function onSubmit(e) {
+  //   e.preventDefault();
+  //   // const type = document.querySelector('input[name="type"]:checked').value;
+  //   // console.log(type);
+  //   console.log(document.form.type.value);
+  //   // setBienvenida(false);
+  //   // setPage(1);
+  //   // setType(type);
+  //   // setSearchValue(search.current.value);
+  //   // search.current.value = "";
+  //   console.log("submit");
+  // }
+  // const [prueba, setPrueba] = useState("false");
+  // function handleSubmit(e) {
+  //   e.preventDefault();
+  //   console.log("submit");
+  //   setPrueba("true");
+  // }
   function next() {
     if (response === "True") {
       setPage(page + 1);
@@ -56,7 +62,7 @@ export function Movies() {
       setPage(page - 1);
     }
   }
-  const keys = [];
+  // const keys = [];
   return (
     <div className="container bienvenida">
       <h1 className="text-light text-center mt-3">MOVIES APP</h1>
@@ -140,11 +146,12 @@ export function Movies() {
           </div>
         </div>
       </form> */}
-      <Form onSubmit={onSubmit} />
-      <Alert
-        message="You can to visit my website where you can find other projects that I have developed."
-        messageLink="View website"
-      />
+        {/* <Form handleSubmit={handleSubmit}/> */}
+        <Alert
+          message="You can to visit my website where you can find other projects that I have developed."
+          messageLink="View website"
+        />
+        <Cards/>
       {/* {bienvenida ? (
         <div className="bienvenida">
           <h1 className="text-light text-uppercase text-center">
@@ -178,7 +185,6 @@ export function Movies() {
       ) : (
         <></>
       )} */}
-      <Cards />
       <div className="fix">
         <div className="row justify-content-around fixed-bottom">
           <div className="col-4 d-flex justify-content-center">
