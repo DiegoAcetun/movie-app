@@ -1,17 +1,17 @@
-export default function Card(props) {
+export default function Card({image, title, type, year}) {
   return (
     <div className="col-md-4 mb-3 d-flex justify-content-center">
       <div className="card" style={{ width: "18rem" }}>
-        <img src={props.image} className="card-img-top" alt="not available" />
+        <img src={image} className="card-img-top" alt="not available" />
         <div className="card-body">
           <p className="card-text">
-            TITLE: {props.title}
+            TITLE: {title}
           </p>
           <p className="card-text">
-            TYPE: {props.type}
+            TYPE: {type}
           </p>
           <p className="card-text">
-            YEAR: {props.year}
+            YEAR: {year}
           </p>
         </div>
       </div>
