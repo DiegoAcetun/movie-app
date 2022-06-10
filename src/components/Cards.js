@@ -3,14 +3,12 @@ import Form from "./Form";
 import Card from "./Card";
 import Button from "./Button";
 function Cards() {
-  // console.log("montando cards");
   const [movies, setMovies] = useState([]);
   const [response, setResponse] = useState("");
   const [searchValue, setSearchValue] = useState();
   const [type, setType] = useState("");
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  // // TODO: usar bienvenida con useContext
   const [bienvenida, setBienvenida] = useState(true);
   useEffect(() => {
     async function fetchData() {
@@ -19,7 +17,6 @@ function Cards() {
           return;
         }
         setLoading(true);
-        console.log(page);
         const apiKey = process.env.REACT_APP_KEY_OMDB;
         const URL = `https://www.omdbapi.com/?apikey=${apiKey}&s=${searchValue}&type=${type}&page=${page}`;
         const response = await fetch(URL);
@@ -32,16 +29,11 @@ function Cards() {
       }
     }
     fetchData();
-    // console.log("use effect cards");
   }, [searchValue, type, page, bienvenida]);
 
   // * Manejadores de eventos
   function handleSubmit(e) {
     e.preventDefault();
-    // console.log("submit");
-    // console.log(document.form.type.value);
-    // console.log(document.form.search.value);
-    // console.log(document.form.search);
     setBienvenida(false);
     setPage(1);
     setType(document.form.type.value);
@@ -74,10 +66,8 @@ function Cards() {
       ) : response === "True" ? (
         <>
           <div className="row justify-content-center align-items-center">
-            {/* let keys = [], */}
             {movies.map((movie) => {
-              // const keys  = [];
-              //verificando si todavia no esta esta pelicula en el array
+              //*verificando si todavia no esta esta pelicula en el array
               if (!keys.includes(movie.imdbID)) {
                 keys.push(movie.imdbID);
                 return (
@@ -114,12 +104,6 @@ function Cards() {
     </>
   );
 
-  // return (
-  //   <>
-  //     <Form />
-  //     <h1 className="text-light">cards</h1>
-  //   </>
-  // );
 }
 
 export default Cards;
