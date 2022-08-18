@@ -7,7 +7,7 @@ export function Movies() {
       <h1 className="text-light text-center mt-3">MOVIES APP</h1>
 
       <Alert
-        message="You can to visit my website where you can find other projects that I have developed."
+        message="You can visit my website where you can find other projects that I have developed."
         messageLink="View website"
       />
       <Cards />
